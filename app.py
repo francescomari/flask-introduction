@@ -1,62 +1,53 @@
-# The Flask class from the flask package represents your application. While
-# Flask contains several other components, using the Flask class is mandatory in
-# every application. You will always have to import it.
+# The Flask class from the flask package represents your application. You must
+# always import it.
 
 from flask import Flask
 
 # An application is an instance of the Flask class.
 #
-# The constructor of the Flask class can receive a lot of arguments, but almost
-# all of them are optional. The only required argument to the constructor is the
-# name of the application, which must be the name of the package or module of
-# your application. This might sound weird, but Flask will use this name to
-# simplify more advanced features like automatically loading other resources
-# that your application might need. Because the details of this mandatory
-# parameter are not really important, and because your applications will
-# probably be contained to a single module (file), using the special variable
-# __name__ is always a safe option.
+# The Flask constructor takes many optional arguments, but only one is required:
+# the name of your application, which should be the name of the package or
+# module. Flask uses this name to help with features like loading resources. For
+# most cases, using the special variable __name__ is a safe choice.
 #
-# You can find more details about the Flask class here:
+# More details about the Flask class:
 #
 # https://flask.palletsprojects.com/en/stable/api/#flask.Flask
 
 app = Flask(__name__)
 
-# Routes tell Flask how you want to handle requests. Routes are functions that
-# are registered to the Flask application using a Python decorator. Python
-# decorators are always prefixed with a `@` character and are written right
-# before the function they are decorating. In this case, the `app.route`
-# decorator is decorating the `index` function. For further information about
-# decorators, read this definition and follow the linked pages:
+# Routes tell Flask how to handle requests. Routes are functions registered to
+# the Flask app using a Python decorator. Decorators are always prefixed with
+# `@` and are written right before the function they decorate. Here, the
+# `app.route` decorator is used for the `index` function. Learn more about
+# decorators:
 #
 # https://docs.python.org/3/glossary.html#term-decorator
 #
-# A decorator answers the question: what kind of HTTP request will this function
-# take care of? The `route` decorator is the simplest decorator there is,
-# because it will only use the request path to decide which function will be
-# called. In this case, a request with a path of `/` will be handled by the
-# `index` function. Because the `route` decorator only looks at the request
-# path, both GET and POST requests to the path `/` will be handled by the `index`
-# function. For more details about routing, see:
+# A decorator specifies which HTTP requests a function will handle. The `route`
+# decorator is the simplest: it uses only the request path and supports GET
+# requests by default. For example, a GET request to `/` will be handled by the
+# `index` function. This route does not handle POST requests unless configured.
+# See the `route` decorator documentation for details:
+#
+# https://flask.palletsprojects.com/en/stable/api/#flask.Flask.route
+#
+# More about routing:
 #
 # https://flask.palletsprojects.com/en/stable/quickstart/#routing
 
 
 @app.route("/")
 def index():
-    # A handler is responsible for handling a request and returning some
-    # response to the client. Depending on what your application does, your
-    # handler can perform different actions and return different responses to
-    # the clients.
+    # A handler processes a request and returns a response to the client.
     #
-    # The simplest response a handler can return is a string, which is always
-    # returned to the client with the `text/html` content type. That is, when
-    # you return a string, you are returning content that the client (possibly,
-    # a web browser) will interpret as a web page. That's why this example
-    # includes a `<p>` tag in the returned string.
+    # The simplest response is a string, which Flask returns with the
+    # `text/html` content type. When you return a string, the client (like a web
+    # browser) will interpret it as a web page. That's why this example includes
+    # a `<p>` tag.
     #
-    # Handlers are not limited to returning HTML pages. For a full description
-    # of how handlers build responses, see:
+    # Handlers can return more than just HTML. For details on building
+    # responses, see:
     #
     # https://flask.palletsprojects.com/en/stable/quickstart/#about-responses
     return "<p>Hello, world!</p>"
@@ -64,23 +55,18 @@ def index():
 
 @app.route("/fail")
 def fail():
-    # Exceptions in your handler result in 500 responses. As you might know, 5xx
-    # responses mean that the error is due to some problem on the server, and
-    # that it might be temporary. When an exception occurs, a 500 status code is
-    # the correct one: it occurs on the server because a programmer made a
-    # mistake, and it is temporary because it will go away as soon as the
-    # programmer fixes his or her code.
+    # Exceptions in your handler result in 500 responses. 5xx responses mean a
+    # server error, usually temporary. When an exception occurs, a 500 status
+    # code is correct: it means the error is on the server and should be fixed
+    # by the programmer.
     raise Exception("surprise!")
 
 
-# Now, what happens if a user sends a request to a route that we didn't define,
-# like `/banana`? You can try for yourself! If Flask doesn't know how to handle
-# a request because no handler is capable of doing that, it will simply return a
-# 404 response to the client. This is the most sensible response to return. A
-# 4xx status code means that the error was generated by the client (because they
-# are sending a request that the server doesn't understand), and it's not meant
-# to be automatically solved if the request is repeated (because if the server
-# doesn't understand `/banana`, the response will not change no matter how many
-# requests the client sends). In particular, 404 is a very good status code to
-# send, because it means that the requested resource (path) was "not found" on
-# the server.
+# If a user requests a route that isn't defined, like `/banana`, Flask returns a
+# 404 response. 4xx status codes mean the error is caused by the client (e.g.,
+# an unknown path). 404 means the requested resource was "not found" on the
+# server.
+#
+# Repeating the request won't change the result unless the server adds that
+# route. Therefore, a 404 status code is the most sensible response for unknown
+# paths.
