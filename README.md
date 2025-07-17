@@ -51,8 +51,8 @@ flask run --debug
 This command detects `app.py` in the current directory and uses it to load your
 application. `flask` will only auto-load applications if they are in `app.py` or
 `wsgi.py`. If your app is in a different file, use the `--app` option to specify
-it. For more details, see [Application
-Discovery](https://flask.palletsprojects.com/en/stable/cli/#application-discovery).
+it. For more details, see
+[Application Discovery](https://flask.palletsprojects.com/en/stable/cli/#application-discovery).
 
 Let's look at some output from the command.
 
@@ -104,8 +104,8 @@ starts.
 
 > [!NOTE]
 > This project has a special endpoint to test debug mode:
-> http://127.0.0.1:5000/fail. Try running your app with and without the `--debug`
-> option to see the difference.
+> http://127.0.0.1:5000/fail. Try running your app with and without the
+> `--debug` option to see the difference.
 
 ## Update the application
 
